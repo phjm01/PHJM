@@ -100,24 +100,75 @@ export const CategoryCard = ({ image, title, arabicTitle, index }) => {
   );
 };
 
-// Company Description Section
+// Company Description Section with Text Animation
 export const CompanyDescription = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    const element = document.getElementById('company-description');
+    if (element) observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % 4);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const slideText = [
+    "Daralnajran is a leading stationery wholesale company in Iraq, offering a wide range of products from notebooks to art supplies. With a commitment to quality and customer satisfaction, they serve schools, businesses, and individual customers, making stationery accessible for everyone.",
+    "دار النجران هي شركة رائدة في تجارة القرطاسية بالجملة في العراق، تقدم مجموعة واسعة من المنتجات من دفاتر الملاحظات إلى مستلزمات الفن.",
+    "We pride ourselves on delivering high-quality office supplies and educational materials to meet all your business and academic needs.",
+    "خدماتنا تشمل المدارس والشركات والعملاء الأفراد، مما يجعل القرطاسية في متناول الجميع."
+  ];
+
   return (
-    <div className="bg-gray-50 py-16">
+    <div id="company-description" className="bg-gray-50 py-16 overflow-hidden">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center">
-          <h2 className="text-4xl font-bold text-red-500 mb-8 leading-relaxed">
-            Daralnajran is a leading stationery wholesale company in Iraq, offering a
-            wide range of products from notebooks to art supplies. With a commitment
-            to quality and customer satisfaction, they serve schools, businesses, and
-            individual customers, making stationery accessible for everyone.
-          </h2>
+        <div className="text-center relative">
+          <div className="relative h-32 flex items-center justify-center">
+            {slideText.map((text, index) => (
+              <h2 
+                key={index}
+                className={`absolute inset-0 flex items-center justify-center text-4xl font-bold text-red-500 leading-relaxed transition-all duration-1000 transform ${
+                  currentSlide === index 
+                    ? 'opacity-100 translate-y-0 scale-100' 
+                    : index < currentSlide 
+                      ? 'opacity-0 -translate-y-8 scale-95'
+                      : 'opacity-0 translate-y-8 scale-95'
+                } ${isVisible ? 'animate-fade-in' : ''}`}
+              >
+                {text}
+              </h2>
+            ))}
+          </div>
+          
           <div className="flex justify-center mt-8">
             <div className="flex space-x-2">
-              <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+              {[0, 1, 2, 3].map((index) => (
+                <div 
+                  key={index}
+                  className={`w-3 h-3 rounded-full transition-all duration-500 cursor-pointer ${
+                    currentSlide === index 
+                      ? 'bg-pink-500 scale-125' 
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  onClick={() => setCurrentSlide(index)}
+                />
+              ))}
             </div>
           </div>
         </div>
