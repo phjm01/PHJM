@@ -347,8 +347,29 @@ export const ProductsGrid = () => {
   );
 };
 
-// Featured Categories Section
+// Featured Categories Section with Enhanced Animations
 export const FeaturedCategories = () => {
+  const [visibleItems, setVisibleItems] = useState(new Set());
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.dataset.index);
+            setVisibleItems(prev => new Set([...prev, index]));
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    const elements = document.querySelectorAll('[data-index]');
+    elements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   const featuredCategories = [
     {
       id: 1,
@@ -398,31 +419,41 @@ export const FeaturedCategories = () => {
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-800">الأقسام</h2>
+          <h2 className="text-2xl font-bold text-gray-800 animate-slide-in-right">الأقسام</h2>
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {featuredCategories.map((category) => (
-            <div key={category.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
-              <div className="aspect-square relative overflow-hidden">
+          {featuredCategories.map((category, index) => (
+            <div 
+              key={category.id} 
+              data-index={index}
+              className={`bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-all duration-700 transform ${
+                visibleItems.has(index) 
+                  ? 'opacity-100 translate-y-0 scale-100' 
+                  : 'opacity-0 translate-y-12 scale-95'
+              } hover:shadow-2xl hover:scale-105 hover:-translate-y-2`}
+              style={{ transitionDelay: `${index * 150}ms` }}
+            >
+              <div className="aspect-square relative overflow-hidden group">
                 {category.badge && (
-                  <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded z-10">
+                  <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded z-10 animate-bounce">
                     {category.badge}
                   </div>
                 )}
                 {category.price && (
-                  <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 text-xs rounded z-10">
+                  <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 text-xs rounded z-10 animate-pulse">
                     {category.price}
                   </div>
                 )}
                 <img
                   src={category.image}
                   alt={category.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-2"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-              <div className="bg-blue-900 text-white p-3 text-center">
-                <h3 className="font-semibold text-sm">{category.title}</h3>
+              <div className="bg-blue-900 text-white p-3 text-center transition-all duration-300 hover:bg-blue-800">
+                <h3 className="font-semibold text-sm transition-transform duration-300 hover:scale-110">{category.title}</h3>
               </div>
             </div>
           ))}
