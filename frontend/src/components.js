@@ -112,7 +112,7 @@ export const CategoryCard = ({ image, title, arabicTitle, index }) => {
       onMouseLeave={() => setIsHovered(false)}
       style={{ transitionDelay: `${index * 50}ms` }}
     >
-      <div className="aspect-square relative overflow-hidden">
+      <div className="aspect-square relative overflow-hidden group">
         <img
           src={image}
           alt={title}
@@ -121,9 +121,26 @@ export const CategoryCard = ({ image, title, arabicTitle, index }) => {
           }`}
           onLoad={() => setIsLoaded(true)}
         />
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/20 to-transparent transition-opacity duration-300 ${
+        {/* Overlay with "View More" text */}
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent transition-all duration-300 ${
           isHovered ? 'opacity-100' : 'opacity-0'
-        }`} />
+        }`}>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className={`text-white text-center transition-all duration-300 transform ${
+              isHovered ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-4 opacity-0 scale-95'
+            }`}>
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/30">
+                <span className="text-sm font-semibold">مشاهدة المزيد</span>
+                <div className="flex justify-center mt-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div className={`bg-blue-900 text-white p-3 text-center transition-all duration-300 ${
         isHovered ? 'bg-blue-800 shadow-lg' : 'bg-blue-900'
