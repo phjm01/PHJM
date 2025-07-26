@@ -484,17 +484,17 @@ export const FeaturedCategories = () => {
                 visibleItems.has(index) 
                   ? 'opacity-100 translate-y-0 scale-100' 
                   : 'opacity-0 translate-y-12 scale-95'
-              } hover:shadow-2xl hover:scale-105 hover:-translate-y-2`}
+              } hover:shadow-2xl hover:scale-105 hover:-translate-y-2 group`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
-              <div className="aspect-square relative overflow-hidden group">
+              <div className="aspect-square relative overflow-hidden">
                 {category.badge && (
-                  <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded z-10 animate-bounce">
+                  <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded z-20 animate-bounce">
                     {category.badge}
                   </div>
                 )}
                 {category.price && (
-                  <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 text-xs rounded z-10 animate-pulse">
+                  <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 text-xs rounded z-20 animate-pulse">
                     {category.price}
                   </div>
                 )}
@@ -503,10 +503,25 @@ export const FeaturedCategories = () => {
                   alt={category.title}
                   className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-2"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* "مشاهدة المزيد" Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-blue-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-white text-center transition-all duration-300 transform translate-y-4 opacity-0 scale-95 group-hover:translate-y-0 group-hover:opacity-100 group-hover:scale-100">
+                      <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/30">
+                        <span className="text-sm font-semibold">مشاهدة المزيد</span>
+                        <div className="flex justify-center mt-1">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="bg-blue-900 text-white p-3 text-center transition-all duration-300 hover:bg-blue-800">
-                <h3 className="font-semibold text-sm transition-transform duration-300 hover:scale-110">{category.title}</h3>
+              <div className="bg-blue-900 text-white p-3 text-center transition-all duration-300 group-hover:bg-blue-800">
+                <h3 className="font-semibold text-sm transition-transform duration-300 group-hover:scale-110">{category.title}</h3>
               </div>
             </div>
           ))}
