@@ -1,55 +1,91 @@
 import React, { useState, useEffect } from 'react';
 
-// Header Component
+// Header Component with Animations
 export const Header = () => {
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setHeaderVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <header className="bg-white border-b border-gray-200 py-4">
+    <header className={`bg-white border-b border-gray-200 py-4 transition-all duration-700 transform ${
+      headerVisible ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo with Animation */}
         <div className="flex items-center">
-          <div className="text-2xl font-bold text-pink-600 flex items-center">
-            <svg className="w-8 h-8 mr-2" viewBox="0 0 32 32" fill="currentColor">
+          <div className="text-2xl font-bold text-pink-600 flex items-center transition-all duration-300 hover:scale-105 cursor-pointer">
+            <svg 
+              className="w-8 h-8 mr-2 transition-transform duration-300 hover:rotate-12" 
+              viewBox="0 0 32 32" 
+              fill="currentColor"
+            >
               <path d="M16 2L24 8V24L16 30L8 24V8L16 2Z" />
             </svg>
-            شركة دار النجران
+            <span className="animate-fade-in-right">شركة دار النجران</span>
           </div>
         </div>
 
-        {/* Search Bar */}
+        {/* Search Bar with Enhanced Animation */}
         <div className="flex-1 max-w-2xl mx-8">
           <div className="relative">
             <input
               type="text"
               placeholder="بحث..."
-              className="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className={`w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg text-right transition-all duration-300 ${
+                searchFocused 
+                  ? 'scale-105 shadow-lg border-pink-500 bg-pink-50' 
+                  : 'hover:shadow-md'
+              } focus:outline-none focus:ring-2 focus:ring-pink-500`}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
             />
-            <button className="absolute left-0 top-0 h-full px-4 text-white bg-pink-600 rounded-l-lg hover:bg-pink-700">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button className="absolute left-0 top-0 h-full px-4 text-white bg-pink-600 rounded-l-lg hover:bg-pink-700 transition-all duration-300 hover:scale-105 active:scale-95">
+              <svg 
+                className="w-5 h-5 transition-transform duration-300 hover:rotate-12" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
           </div>
         </div>
 
-        {/* Navigation Menu */}
+        {/* Navigation Menu with Staggered Animation */}
         <nav className="flex items-center space-x-6 text-sm">
-          <a href="#" className="text-gray-700 hover:text-pink-600 flex items-center">
-            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <a 
+            href="#" 
+            className="text-gray-700 hover:text-pink-600 flex items-center transition-all duration-300 hover:scale-110 transform hover:-translate-y-1"
+            style={{ animationDelay: '200ms' }}
+          >
+            <svg className="w-4 h-4 ml-1 transition-transform duration-300 hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
-            تسجيل الدخول
+            <span className="animate-fade-in-left">تسجيل الدخول</span>
           </a>
-          <a href="#" className="text-gray-700 hover:text-pink-600 flex items-center">
-            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <a 
+            href="#" 
+            className="text-gray-700 hover:text-pink-600 flex items-center transition-all duration-300 hover:scale-110 transform hover:-translate-y-1"
+            style={{ animationDelay: '400ms' }}
+          >
+            <svg className="w-4 h-4 ml-1 transition-transform duration-300 hover:bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 3H5L3 1m4 12a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z" />
             </svg>
-            عربة التسوق
+            <span className="animate-fade-in-left">عربة التسوق</span>
           </a>
-          <button className="text-gray-700 hover:text-pink-600 flex items-center">
-            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button 
+            className="text-gray-700 hover:text-pink-600 flex items-center transition-all duration-300 hover:scale-110 transform hover:-translate-y-1"
+            style={{ animationDelay: '600ms' }}
+          >
+            <svg className="w-4 h-4 ml-1 transition-transform duration-300 hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
             </svg>
-            العربية
+            <span className="animate-fade-in-left">العربية</span>
           </button>
         </nav>
       </div>
