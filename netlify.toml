@@ -9,8 +9,8 @@
   command = "yarn build"
 
 [build.environment]
-  # Node.js version
-  NODE_VERSION = "18"
+  # Node.js version - Updated to 20 for compatibility
+  NODE_VERSION = "20"
   
   # Yarn version
   YARN_VERSION = "1.22.22"
