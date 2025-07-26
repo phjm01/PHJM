@@ -177,8 +177,15 @@ export const CompanyDescription = () => {
   );
 };
 
-// Main Products Grid Component
+// Main Products Grid Component with Staggered Animation
 export const ProductsGrid = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 200);
+    return () => clearTimeout(timer);
+  }, []);
+
   const categories = [
     {
       id: 1,
@@ -300,36 +307,39 @@ export const ProductsGrid = () => {
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* First Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <CategoryCard
             key={category.id}
             image={category.image}
             title={category.title}
             arabicTitle={category.arabicTitle}
+            index={index}
           />
         ))}
       </div>
 
       {/* Second Row */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-        {secondRowCategories.map((category) => (
+        {secondRowCategories.map((category, index) => (
           <CategoryCard
             key={category.id}
             image={category.image}
             title={category.title}
             arabicTitle={category.arabicTitle}
+            index={index + 7}
           />
         ))}
       </div>
 
       {/* Third Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {thirdRowCategories.map((category) => (
+        {thirdRowCategories.map((category, index) => (
           <CategoryCard
             key={category.id}
             image={category.image}
             title={category.title}
             arabicTitle={category.arabicTitle}
+            index={index + 12}
           />
         ))}
       </div>
