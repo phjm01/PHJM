@@ -57,19 +57,44 @@ export const Header = () => {
   );
 };
 
-// Product Category Card Component
-export const CategoryCard = ({ image, title, arabicTitle }) => {
+// Product Category Card Component with Enhanced Animations
+export const CategoryCard = ({ image, title, arabicTitle, index }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), index * 100);
+    return () => clearTimeout(timer);
+  }, [index]);
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
+    <div 
+      className={`bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-all duration-500 transform hover:shadow-2xl ${
+        isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+      } ${isHovered ? 'scale-105 -translate-y-2' : 'scale-100'}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{ transitionDelay: `${index * 50}ms` }}
+    >
       <div className="aspect-square relative overflow-hidden">
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className={`w-full h-full object-cover transition-transform duration-700 ${
+            isHovered ? 'scale-110 rotate-1' : 'scale-100'
+          }`}
+          onLoad={() => setIsLoaded(true)}
         />
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/20 to-transparent transition-opacity duration-300 ${
+          isHovered ? 'opacity-100' : 'opacity-0'
+        }`} />
       </div>
-      <div className="bg-blue-900 text-white p-3 text-center">
-        <h3 className="font-semibold text-sm">{arabicTitle}</h3>
+      <div className={`bg-blue-900 text-white p-3 text-center transition-all duration-300 ${
+        isHovered ? 'bg-blue-800 shadow-lg' : 'bg-blue-900'
+      }`}>
+        <h3 className={`font-semibold text-sm transition-transform duration-300 ${
+          isHovered ? 'scale-105' : 'scale-100'
+        }`}>{arabicTitle}</h3>
       </div>
     </div>
   );
